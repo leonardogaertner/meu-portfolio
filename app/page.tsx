@@ -12,7 +12,6 @@ const theme = {
   text: 'text-[#1a1a1a]',
 };
 
-// Copywriting ultra-preciso, focado no impacto e engenharia.
 const projects = [
   { 
     id: 1, 
@@ -28,7 +27,7 @@ const projects = [
   },
   { 
     id: 3, 
-    title: 'Eventation', // Encurtei para dar um nome próprio mais forte
+    title: 'Eventation', 
     description: 'Interactive management and showcase platform for live events.', 
     link: 'https://events-portfolio-two.vercel.app/' 
   },
@@ -36,7 +35,6 @@ const projects = [
     id: 4, 
     title: 'Black Cloth', 
     description: 'High-performance, minimalist e-commerce architecture for a fashion label.', 
-    // NOTA: Troque este link para o URL do site publicado, o painel da vercel bloqueia iframes.
     link: 'https://clothing-portfolio-rosy.vercel.app/' 
   },
 ];
@@ -68,7 +66,8 @@ function CustomCursor() {
 
   return (
     <motion.div
-      className="fixed top-0 left-0 pointer-events-none z-50 mix-blend-difference rounded-full bg-white flex items-center justify-center"
+      // Escondido em mobile (hidden md:flex) para não criar um "ponto" preso na tela de toque
+      className="hidden md:flex fixed top-0 left-0 pointer-events-none z-50 mix-blend-difference rounded-full bg-white items-center justify-center"
       animate={{
         x: mousePosition.x - (isHovering ? 20 : 10),
         y: mousePosition.y - (isHovering ? 20 : 10),
@@ -186,7 +185,7 @@ export default function PortfolioPage() {
   const xTranslate = useTransform(scrollYProgress, [0, 1], ['0%', '-75%']); 
 
   return (
-    <main className={`min-h-screen ${theme.background} selection:bg-[#1a1a1a] selection:text-white cursor-none`}>
+    <main className={`min-h-screen ${theme.background} selection:bg-[#1a1a1a] selection:text-white md:cursor-none`}>
       
       <CustomCursor />
       
@@ -203,12 +202,13 @@ export default function PortfolioPage() {
           </Canvas>
         </div>
 
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none select-none">
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none select-none px-4">
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[18vw] md:text-[14vw] font-bold tracking-tighter text-[#1a1a1a] leading-[0.85]"
+            // Tamanho de fonte ajustado para evitar overflow no mobile
+            className="text-[13vw] sm:text-[14vw] md:text-[11vw] lg:text-[10vw] font-bold tracking-tighter text-[#1a1a1a] leading-[0.85]"
             style={{ textShadow: '0px 0px 50px rgba(255,255,255,0.9)' }}
           >
             LEONARDO
@@ -217,18 +217,18 @@ export default function PortfolioPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="text-[18vw] md:text-[14vw] font-bold tracking-tighter text-[#1a1a1a] leading-[0.85]"
+            className="text-[13vw] sm:text-[14vw] md:text-[11vw] lg:text-[10vw] font-bold tracking-tighter text-[#1a1a1a] leading-[0.85]"
             style={{ textShadow: '0px 0px 50px rgba(255,255,255,0.9)' }}
           >
             GAERTNER
           </motion.h1>
         </div>
 
-        <div className="relative z-20 w-full h-full p-8 md:p-12 pointer-events-none flex flex-col justify-between">
+        <div className="relative z-20 w-full h-full p-6 md:p-12 pointer-events-none flex flex-col justify-between">
           <div className="flex justify-between items-start font-mono text-xs uppercase tracking-widest text-[#1a1a1a]">
             <div>
-              <p className="font-bold text-lg font-serif mb-1 tracking-normal capitalize">Full Stack Developer</p>
-              <p className="opacity-60">Software Engineering Student</p>
+              <p className="font-bold text-base md:text-lg font-serif mb-1 tracking-normal capitalize">Full Stack Developer</p>
+              <p className="opacity-60 text-[10px] md:text-xs">Software Engineering Student</p>
             </div>
             <div className="text-right opacity-60 hidden md:block">
               <p>Based in Brazil ✦ 2026</p>
@@ -242,8 +242,8 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* 2. PROJECTS (HORIZONTAL SCROLL) */}
-      <section ref={horizontalTrackRef} className="relative h-[400vh] bg-white">
+      {/* 2. PROJECTS (DESKTOP: HORIZONTAL SCROLL) */}
+      <section ref={horizontalTrackRef} className="hidden md:block relative h-[400vh] bg-white">
         <div className="sticky top-0 flex h-screen items-center overflow-hidden">
           <motion.div style={{ x: xTranslate }} className="flex">
             {projects.map((project) => (
@@ -268,18 +268,14 @@ export default function PortfolioPage() {
                     </a>
                   </div>
                   
-                  {/* Iframe Section - Live Website Preview */}
                   <div className="md:col-span-7 relative w-full aspect-[4/3] md:aspect-[16/10] bg-neutral-100 border border-neutral-200 shadow-xl flex items-center justify-center overflow-hidden">
-                     {/* Technical accents */}
                      <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neutral-300 z-20" />
                      <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-neutral-300 z-20" />
                      
-                     {/* Loading State Text */}
                      <span className="absolute font-mono text-xs text-neutral-400 uppercase tracking-widest z-0">
                        Loading Live Site...
                      </span>
 
-                     {/* The Actual Live Site */}
                      <iframe 
                         src={project.link} 
                         title={`Live preview of ${project.title}`}
@@ -296,8 +292,54 @@ export default function PortfolioPage() {
         </div>
       </section>
 
+      {/* 2.5 PROJECTS (MOBILE: VERTICAL STACK) */}
+      <section className="block md:hidden relative bg-white w-full">
+        {projects.map((project) => (
+          <div key={project.id} className="min-h-screen w-full flex flex-col items-center justify-center px-6 py-16 border-b border-neutral-200 relative overflow-hidden">
+            
+            <div className="absolute top-10 left-2 text-[45vw] font-bold text-black/5 leading-none z-0 pointer-events-none tracking-tighter">
+              0{project.id}
+            </div>
+            
+            <div className="relative z-10 w-full flex flex-col gap-10 mt-12">
+              <div className="w-full">
+                <div className="h-[2px] w-12 bg-neutral-900 mb-6" />
+                <h2 className="text-4xl sm:text-5xl font-serif tracking-tight mb-4">{project.title}</h2>
+                <p className="text-base sm:text-lg text-neutral-500 font-light mb-8 max-w-sm">{project.description}</p>
+                <a 
+                  href={project.link} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-4 px-6 py-3 bg-neutral-900 text-white rounded-full hover:bg-neutral-800 transition-colors text-xs uppercase tracking-widest font-medium active:scale-95"
+                >
+                  View Project →
+                </a>
+              </div>
+              
+              <div className="relative w-full aspect-[4/3] bg-neutral-100 border border-neutral-200 shadow-lg flex items-center justify-center overflow-hidden">
+                 <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-neutral-300 z-20" />
+                 <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-neutral-300 z-20" />
+                 
+                 <span className="absolute font-mono text-[10px] text-neutral-400 uppercase tracking-widest z-0 text-center px-4">
+                   Loading Preview...
+                 </span>
+
+                 <iframe 
+                    src={project.link} 
+                    title={`Live preview of ${project.title}`}
+                    className="absolute inset-0 w-full h-full border-0 pointer-events-none z-10 opacity-0 transition-opacity duration-1000"
+                    onLoad={(e) => e.currentTarget.classList.remove('opacity-0')}
+                    loading="lazy"
+                 />
+              </div>
+            </div>
+
+          </div>
+        ))}
+      </section>
+
       {/* 3. FOOTER */}
-      <section className="h-[70vh] w-full flex flex-col items-center justify-center bg-[#1a1a1a] text-[#e8e6dc] text-center p-8">
+      <section className="h-[70vh] w-full flex flex-col items-center justify-center bg-[#1a1a1a] text-[#e8e6dc] text-center p-6 md:p-8">
         <h3 className="text-4xl md:text-7xl font-serif tracking-tight max-w-4xl">
           Let's build something exceptional.
         </h3>
